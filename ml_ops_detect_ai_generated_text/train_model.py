@@ -116,6 +116,7 @@ def prepare_wandb():
 
 
 
+
 @hydra.main(config_path="../configs",
             config_name="config.yaml", version_base="1.2")
 def train_model(config):
