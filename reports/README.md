@@ -509,10 +509,15 @@ Other monitoring could include data drifting, wherein re-training models are req
 > Answer:
 
 Primarily Cloud Storage and Engine was the most pricey service. 
+
 s194264 used 21$ of the alloted 50$.
+
 s194245 - 7.91$ 
+
 s222968 - 14.02$
+
 s173955 - 3.86$
+
 s194262 - 6.41$
 
 
@@ -535,6 +540,9 @@ s194262 - 6.41$
 >
 > Answer:
 
+![image](https://github.com/DanielHolmelund/ml_ops_detect_ai_generated_text/assets/57216460/40e2b177-a23d-45a1-9dc2-54f6fce873b2)
+
+First, the local setup is the git repository cloned with a virtual environment. Otherwise, there are 3 additional areas. After the local setup, the next step is to configure the storage and version control of data and code via DVC, git, and GCP. Whenever a new push is registered on the main branch of the Git repository, the GCP triggers a new build instance of the container given the cloudbuild.yaml file, which in turn uses docker compose and the dockerfiles. Furthermore, at this time there are several workflows which check PEP8 compliancy, linting and unit-tests of critical application code parts. For the deployment part, we manually deploy it onto streamlit, however this could be done using a trigger. 
 
 
 ### Question 26
@@ -549,8 +557,7 @@ s194262 - 6.41$
 >
 > Answer:
 
-Configuring our deployment setup and getting everything up and running on Google Cloud turned out to be the toughest and most time-consuming task for us. A lot of this difficulty came from our team's relative unfamiliarity with Google Cloud's features and how they operate with docker, etc. Even just getting the hang of the interface was quite a task. We had to rely heavily on a mix of trial and error, along with a lot of  
-detailed reading of tutorials and guides, to get our whole pipeline operational. It was a bit of a journey, but in the end, we managed to get everything working as intended, but leaving quite a lot of unexplored potential in terms of monitoring and other tasks presented in later exercises, including but not limited to the exhaustive check list, which we would have liked to explore given the opportunity.
+Configuring our deployment setup and getting everything up and running on Google Cloud with Docker turned out to be the toughest and most time-consuming task for us. A lot of this difficulty came from our team's relative unfamiliarity with Google Cloud's features and how they operate with docker, etc. Even just getting the hang of the interface was quite a task. We had to rely heavily on a mix of trial and error, along with a lot of detailed reading of tutorials and guides, to get our whole pipeline operational. It was a bit of a journey, but in the end, we managed to get everything working as intended, but leaving quite a lot of unexplored potential in terms of monitoring and other tasks presented in later exercises, including but not limited to the exhaustive check list, which we would have liked to explore given the opportunity.
 
 
 ### Question 27
