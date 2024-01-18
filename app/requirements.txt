@@ -2,3 +2,8 @@ streamlit
 pandas
 numpy
 fastapi
+torch
+omegaconf
+scikit-learn
+transformers
+pytorch_lightning

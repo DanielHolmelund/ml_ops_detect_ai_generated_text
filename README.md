@@ -85,7 +85,7 @@ pip install -e .
 
 ### Download the data
 
-*Request permission:* https://drive.google.com/drive/folders/1apqcOMgmfkuDp4VGnCcmN6Bwx3dE1GC-
+*Request permission:* https://drive.google.com/drive/folders/1f4qcO9LK7zODpxtdoSRSdXAugRSh8BsE?usp=share_link
 
 Then run:
 ```bash
@@ -167,15 +167,123 @@ wandb sweep --project ml_ops_detect_ai_generated_text "./config/sweep/lr_sweep.y
 3. Push it: `dvc push -r remote_storage`
       1. Failing? try `dvc add data` and follow error specifications
 
+4. Extra: create a data bucket for the model.
+
+
 ### Train a model
 
 
-1. Create a Google Compute Engine (GCE)
-2. SSH into that GCE (Google Compute Engine), git clone, install dependencies, dvc pull, wandb login, etc
-3. Start training by:
+##### Initialize
+
+1. Create a VM:
       ```bash
-      python ml_ops_detect_ai_generated_text/train_model.py training.model_path=gs://mlops_model_unique/models/ 
+      gcloud compute instances create cpu-instance \
+            --zone europe-central2-a \
+            --image-family=pytorch-latest-cpu \
+            --image-project=deeplearning-platform-release
       ```
+2. Login to that VM (or from the browser):
+      ```bash
+      gcloud beta compute ssh cpu-instance --zone europe-central2-a
+      ```
+
+
+#### Command line
+
+1. Create a python environment and do the setup:
+      1. conda, dependencies, wandb login
+      2. init gcp: 
+      ```
+      gcloud auth login
+      ```
+2. get the data:
+      ```
+      mkdir data
+      gsutil cp -r gs://mlops_data_unique_name/data ./
+      ```
+3. Initiate training:
+      ```bash
+      python ml_ops_detect_ai_generated_text/train_model.py
+      ```
+4. Get the model... `todo` didn't work..:
+      ´´´ bash
+      gsutil cp -r models gs://mlops_model_unique
+      ´´´
+
+#### Docker
+
+1. Make sure the docker file is working locally: 
+      ```bash
+      # build image
+      docker build --platform linux/amd64 -t gcr.io/dtumlops-410913/trainer:latest .
+      # run container
+      # we set the wandb api key as an environment variable
+      docker run -e WANDB_API_KEY=<your_api_key> --name trainer-container -d trainer:latest
+      ```
+      1. *You can find the API key under your wandb user settings*
+
+2. Push the docker container to registry:
+      ```
+      docker build -t gcr.io/<project-id>/trainer:latest .
+
+      docker push gcr.io/<project-id>/trainer
+      ```
+      1. Side step: `gcloud auth configure-docker`
+            *Ensure that Docker is authenticated to push images to your GCP*
+3. Connect to the VM through SSH
+      1. Run: `docker pull gcr.io/<project-id>/trainer:latest`
+4. Finally run the docker container:
+      ```bash
+      docker run -e WANDB_API_KEY=<your_api_key> --name trainer-container -d gcr.io/<project-id>/trainer:latest 
+      ```
+      1. Run: `docker images` to see all images
+      2. Run: `docker ps -a` to see all containers
+      3. Delete by:
+            ```bash
+            # Stop the running container
+            docker stop <container-id-or-name>
+
+            # Remove the stopped container
+            docker rm <container-id-or-name>
+
+            # See info
+            docker inspect <container-id-or-name>
+            ```
+
+Vertex AI??
+
+```bash
+gcloud ai custom-jobs create \
+--region=europe-west1 \
+--display-name=test-run \
+--config=configs/cloud/train.yaml 
+```
+
+OLD:
+
+python ml_ops_detect_ai_generated_text/train_model.py
+  ++training.model_bucket=gs://mlops_model_unique/ \
+  ++training.data_bucket=gs://mlops_data_unique_name/
+
+
+## Deployment
+
+Check that either the FastAPI or Streamlit applications are working:
+
+`uvicorn app.main:app --reload`
+
+`streamlit run app/streamlitapp.py`
+
+Then upload a trained model with configs to a bucket, e.g.
+
+```bash
+gsutil cp models/2024-01-17/09-31-32/distilbert-base-uncased-epoch=00-val_loss=0.00.ckpt gs://mlops_model_unique/deploy/model.ckpt
+gsutil cp outputs/2024-01-17/09-31-32/.hydra/config.yaml gs://mlops_model_unique/deploy/config.yaml
+```
+
+
+
+
 
 ---
 
