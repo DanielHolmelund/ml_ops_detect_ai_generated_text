@@ -104,8 +104,7 @@ end of the project.
 > **Enter the group number you signed up on <learn.inside.dtu.dk>**
 >
 > Answer:
-
-3
+> 3
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -244,7 +243,7 @@ In total we have implemented 2 tests. One concerns the training of the model and
 >
 > Answer:
 
-We have a coverage of 100%. Coverage of a 100% does not coincide with no corner cases being unhandled by the source code of the application, rather just how much of the code is executed at runtime. It is a good indicator however of proper testing.
+We have a coverage of 100%. Coverage of a 100% does not coincide with no corner cases being unhandled by the source code of the application, rather just how much of the code is executed at runtime. It is a good indicator however of proper testing. 
 
 ### Question 9
 
@@ -293,7 +292,7 @@ The project data was stored with DVC in Google Drive, however when experimenting
 > Answer:
 
 
-The organization of our CI has been split into XXXXXXX files (Writing current setup): the pytests.yml file runs all the tests and computes the coverage. The codecheck.yml file ensures that the code in the repository is PEP8 compliant and performs linting using the ruff package. Currently, these tests are merely executed on an Ubuntu Linux OS, but could be extended to macOS and Windows easily. We opted to not do it initially due to a ceiling of 2.000 minutes on GitHub Actions with a free account. Another idea could be to implement a workflow, which runs a docker instance on the GCP and ensures that the building and pushing of the repository in the container to the cloud is succesful. Due to time constraints and the requirement of a secrets file, we opted to use our time on other pressing matters. 
+The organization of our CI has been split into 2 files: the pytests.yml file runs all the tests and computes the coverage. The codecheck.yml file ensures that the code in the repository is PEP8 compliant and performs linting using the ruff package. Currently, these tests are merely executed on an Ubuntu Linux OS, but could be extended to macOS and Windows easily. We opted to not do it initially due to a ceiling of 2.000 minutes on GitHub Actions with a free account. Another idea could be to implement a workflow, which runs a docker instance on the GCP and ensures that the building and pushing of the repository in the container to the cloud is succesful. Due to time constraints and the requirement of a secrets file, we opted to use our time on other pressing matters.  An example of the GitHub Actions workflow triggers and its history can be seen [here](https://github.com/DanielHolmelund/ml_ops_detect_ai_generated_text/actions/workflows/codecheck.yml). We do also not test multiple Python Versions, which is probably a good practice for an application within reasonable limits, however we deliberately specify a Python version in the setup of the repository, hence this is in the end a intentional choice for the project.
 
 ## Running code and tracking experiments
 
@@ -349,7 +348,7 @@ Configuration files play a crucial role in our setup. These files help in clearl
 
 ![image](https://github.com/DanielHolmelund/ml_ops_detect_ai_generated_text/assets/114672733/43d1aec0-9f3f-45f7-ab2e-58c8cf92aa7d)
 
-In this image we have tracked several metrics relating to the training and evaluation of our model. This should inform us about any possible problems with the model and whether or not it is learning correctly, in turn informing our decisions on changing hyperparameters if need be. In our case, the underlying model and its performance is not of importance as it is the MLOps that is important. However, one would hopefully see glaring issues in the picture above (a closer inspection would reveal the kaggle dataset is egregious). 
+In this image we have tracked several metrics relating to the training and evaluation of our model. This should inform us about any possible problems with the model and whether or not it is learning correctly, in turn informing our decisions on changing hyperparameters if need be. In our case, the underlying model and its performance is not of importance as it is the MLOps that is important. However, one would hopefully see glaring issues in the picture above (a closer inspection would reveal the kaggle dataset is egregious). In general, one would expect a decreasing loss and validation loss, and an increase in accuracy to match. It also allows one to ascertain whether or not overfitting or underfitting is present.
 
 
 ### Question 15
