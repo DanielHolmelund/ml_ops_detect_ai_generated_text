@@ -1,9 +1,0 @@
-# config_cpu.yaml
-workerPoolSpecs:
-  - machineSpec:
-      machineType: n1-highmem-2
-    replicaCount: 1
-    pythonPackageSpec:
-      executorImageUri: gcr.io/dtumlops-410913/trainer
-      args:
-        - --WANDB_API_KEY=dd1f2bbf51b8f93e069c89e9798703b40430999b
