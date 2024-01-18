@@ -444,8 +444,7 @@ The trained model bucket:
 >
 > Answer:
 
-
-
+![image](https://github.com/DanielHolmelund/ml_ops_detect_ai_generated_text/assets/57216460/6728d265-80cb-4fbf-9380-fbe879d9f416)
 
 
 ### Question 21
@@ -473,7 +472,11 @@ The trained model bucket:
 >
 > Answer:
 
---- question 22 fill here ---
+For deployment we utilized the Streamlit framework to create an interactive app. Steamlit allows us to connect the main branch of the repository ensuring an updated app with the newest developed features. Using the google API our pretrained model is loaded from the cloud bucket, which allows for fast inference time of the end user. Streamlit allows for 1GB RAM usage for each app, which both allows for the model to be loaded into the application and cache alleviating wait time for the end user. The deployed model can either be accessed locally by running:
+```bash
+streamlit run app/streamlitapp.py
+```
+or accessed remotely in [here](https://detectaigeneratedtextmlops.streamlit.app/). Since we used this approach the FastAPI module was not further explored in combination with either Cloud Run or Cloud Functions services.
 
 ### Question 23
 
@@ -490,6 +493,7 @@ The trained model bucket:
 
 In general, this subject wasn't given top priority because Google Cloud appears to be quite comprehensive in its monitoring capabilities, covering aspects like security, user activity, and performance. Moreover, there's an option to establish a maximum on the number of requests. Additionally, "Cloud Armor Network Security" offers safeguards against threats such as DDoS attacks. The reason for no monitoring is primarily due to time constraints since the implementation of our application on the cloud proved difficult.
 
+Other monitoring could include data drifting, wherein re-training models are required as the features created by the model would become un-representative of the present as newer data comes in. 
 
 
 ### Question 24
@@ -504,8 +508,13 @@ In general, this subject wasn't given top priority because Google Cloud appears 
 >
 > Answer:
 
---- question 24 fill here ---
-s194264 used 25$ of the alloted 50$. 
+Primarily Cloud Storage and Engine was the most pricey service. 
+s194264 used 21$ of the alloted 50$.
+s194245 - 7.91$ 
+s222968 - 14.02$
+s173955 - 3.86$
+s194262 - 6.41$
+
 
 ## Overall discussion of project
 
