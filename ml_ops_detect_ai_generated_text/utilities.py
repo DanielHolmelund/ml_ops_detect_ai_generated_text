@@ -49,7 +49,7 @@ def run_profiling():
     inputs = tokenizer(texts, return_tensors="pt")
     # Forward pass
     with profile(activities=[ProfilerActivity.CPU], record_shapes=True) as prof:
-        outputs = model(**inputs)
+        model(**inputs)
         #logits = outputs.logits
 
     print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=10))
@@ -68,7 +68,7 @@ def run_profiling():
     from io import StringIO
     pr = cProfile.Profile()
     pr.enable()
-    outputs = model(**inputs)
+    model(**inputs)
     #logits = outputs.logits
     pr.disable()
     s = StringIO()

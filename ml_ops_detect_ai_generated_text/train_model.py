@@ -1,9 +1,7 @@
 import os
-from datetime import datetime
 
 from omegaconf import OmegaConf
 import hydra
-import torch
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 import wandb

@@ -1,4 +1,3 @@
-import torch
 
 #from models.model import TextClassificationModel
 

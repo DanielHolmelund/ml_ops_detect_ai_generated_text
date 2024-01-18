@@ -1,11 +1,5 @@
-import os
-from datetime import datetime
-from pathlib import Path
 
-from omegaconf import OmegaConf
-import hydra
 import torch
-import pytorch_lightning as pl
 
 from transformers import DistilBertTokenizer
 
@@ -20,7 +14,7 @@ def app_predict(text: str, model, access_token) -> bool:
     tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased", use_auth_token=True, token = access_token)
     # Tokenize the entire dataset
     max_length = 512
-    tokenized_texts = tokenizer(
+    tokenizer(
         list(text), truncation=True, padding=True, max_length=max_length, return_tensors="pt"
     )
     
