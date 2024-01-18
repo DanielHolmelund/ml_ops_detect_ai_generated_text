@@ -12,7 +12,6 @@ from utilities import get_paths
 from data.dataloaders import get_dataloaders
 from models.model import TextClassificationModel
 
-#os.environ["HYDRA_FULL_ERROR"] = "1" # Show full error trace for debugging
 
 
 def get_callbacks(model_path: str, model_name: str) -> list:
@@ -78,7 +77,7 @@ def get_trainer(config: dict, callbacks: list, experiment_name: str) -> pl.Train
 
 
 
-def hydra_path_2_save_path(model_path: str):
+def hydra_path_2_save_path(model_path: str) -> str:
     """
     Get the path to the hydra directory and construct model paths.
 
@@ -100,6 +99,24 @@ def hydra_path_2_save_path(model_path: str):
     return model_path, experiment_name
 
 
+def prepare_wandb():
+    """
+    Prepare WandB for logging.
+
+    """
+    # Check if logged in
+    if wandb.run is None:
+        try:
+            # Check if WANDB_API_KEY environment variable is set
+            if 'WANDB_API_KEY' in os.environ:
+                # Set up WandB with the API key
+                wandb.login(key=os.environ['WANDB_API_KEY'])
+            else:
+                raise ValueError("WANDB_API_KEY environment variable not set.")
+        except:
+            raise ValueError("Failed to log in to WandB. Check your API key.")
+
+
 
 @hydra.main(config_path="../configs",
             config_name="config.yaml", version_base="1.2")
@@ -112,7 +129,6 @@ def train_model(config):
     - Saving the model
     """
 
-
     #current_datetime = datetime.now()
     #now = current_datetime.strftime("%d-%m-%Y_%H:%M:%S")
     # Chekc if an experiment is present (in struct)
@@ -124,8 +140,11 @@ def train_model(config):
     # Print the config
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
 
+    # Prepare wandb
+    #prepare_wandb()
+
     # Manage paths
-    repo_path, data_path, model_path = get_paths()
+    repo_path, data_path, model_path = get_paths(config)
 
     # Get model
     model = TextClassificationModel(

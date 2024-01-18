@@ -6,7 +6,7 @@ This script containes utility functions for the project.
 """
 
 
-def get_paths() -> tuple:
+def get_paths(config) -> tuple:
     """
     Get the paths to the repository, data, and model directories.
 
@@ -15,9 +15,16 @@ def get_paths() -> tuple:
     """
 
     repo_path = Path(__file__).resolve().parents[1]
-    data_path = repo_path / "data"
-    model_path = repo_path / "models"
+    if config.training.data_bucket == "":
+        data_path = repo_path / "data"
+    else:
+        data_path = Path(config.training.data_bucket) / "data"
 
+    if config.training.model_bucket == "":
+        model_path = repo_path / "models"
+    else:
+        model_path = Path(config.training.model_bucket) / "models"
+        
     return repo_path, data_path, model_path
 
 def run_profiling():
@@ -37,13 +44,13 @@ def run_profiling():
     tokenizer = model.tokenizer
     # Dummy data, e.g. 5 sentences
     texts = ["This is a test"] * 5
-    labels = [0] * 5
+    #labels = [0] * 5
     # Tokenize
     inputs = tokenizer(texts, return_tensors="pt")
     # Forward pass
     with profile(activities=[ProfilerActivity.CPU], record_shapes=True) as prof:
         outputs = model(**inputs)
-        logits = outputs.logits
+        #logits = outputs.logits
 
     print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=10))
     prof.export_chrome_trace("outputs/profiling/trace.json")
@@ -62,7 +69,7 @@ def run_profiling():
     pr = cProfile.Profile()
     pr.enable()
     outputs = model(**inputs)
-    logits = outputs.logits
+    #logits = outputs.logits
     pr.disable()
     s = StringIO()
     sortby = "cumulative"
