@@ -111,7 +111,7 @@ def prepare_wandb():
                 wandb.login(key=os.environ['WANDB_API_KEY'])
             else:
                 raise ValueError("WANDB_API_KEY environment variable not set.")
-        except:
+        except ValueError as e:
             raise ValueError("Failed to log in to WandB. Check your API key.")
 
 
