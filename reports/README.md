@@ -243,7 +243,7 @@ In total we have implemented 2 tests. One concerns the training of the model and
 >
 > Answer:
 
-We have a coverage of 100%. Coverage of a 100% does not coincide with no corner cases being unhandled by the source code of the application, rather just how much of the code is executed at runtime. It is a good indicator however of proper testing. 
+We have a coverage of 100% when running our tests. However, this may be misleading as it tests the `tests` folder alone using pytest. Coverage of a 100% does not coincide with no corner cases being unhandled by the source code of the application, rather just how much of the code is executed at runtime. It is a good indicator however of proper testing. 
 
 ### Question 9
 
@@ -541,7 +541,15 @@ s194262 - 6.41$
 
 ![image](https://github.com/DanielHolmelund/ml_ops_detect_ai_generated_text/assets/57216460/40e2b177-a23d-45a1-9dc2-54f6fce873b2)
 
-First, the local setup is the git repository cloned with a virtual environment. Otherwise, there are 3 additional areas. After the local setup, the next step is to configure the storage and version control of data and code via DVC, git, and GCP. Whenever a new push is registered on the main branch of the Git repository, the GCP triggers a new build instance of the container given the cloudbuild.yaml file, which in turn uses docker compose and the dockerfiles. Furthermore, at this time there are several workflows which check PEP8 compliancy, linting and unit-tests of critical application code parts. For the deployment part, we manually deploy it onto streamlit, however this could be done using a trigger. 
+The process begins with a local setup, where the project is cloned from Git into a virtual environment, ensuring a controlled development environment.
+
+For effective collaboration and version control, Data Version Control (DVC) is employed alongside Git, providing a systematic approach to manage both data and code versions. Google Cloud Platform (GCP) is utilized for storage and as a robust cloud infrastructure, facilitating scalability and accessibility.
+
+Continuous Integration (CI) is implemented using GCP's Cloud Build, triggered by new pushes to the main Git branch. The build process is defined in the cloudbuild.yaml file, utilizing Docker and Docker Compose for containerization. This ensures reproducibility and consistency across different environments. The CI workflow enforces PEP8 compliance, code linting, and unit testing, enhancing code quality and reliability.
+
+To streamline the deployment process, the system integrates with Streamlit. While manual deployment is currently in place, the architecture could readily support automation through triggers, allowing for a more efficient and automated deployment process, but due to time constraints this venture was not fully explored.
+
+Furthermore, key tools like PyTorch, Anaconda, VSCode, Hydra, Weights and Biases (WandB), and GitHub were seamlessly integrated, enhancing the development experience and enabling efficient collaboration, tracking and reproducibility. 
 
 
 ### Question 26
