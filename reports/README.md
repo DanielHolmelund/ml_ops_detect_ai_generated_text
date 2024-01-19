@@ -348,7 +348,11 @@ Configuration files play a crucial role in our setup. These files help in clearl
 
 ![image](https://github.com/DanielHolmelund/ml_ops_detect_ai_generated_text/assets/114672733/43d1aec0-9f3f-45f7-ab2e-58c8cf92aa7d)
 
-In this image we have tracked several metrics relating to the training and evaluation of our model. This should inform us about any possible problems with the model and whether or not it is learning correctly, in turn informing our decisions on changing hyperparameters if need be. In our case, the underlying model and its performance is not of importance as it is the MLOps that is important. However, one would hopefully see glaring issues in the picture above (a closer inspection would reveal the kaggle dataset is egregious). In general, one would expect a decreasing loss and validation loss, and an increase in accuracy to match. It also allows one to ascertain whether or not overfitting or underfitting is present.
+In our experiments with Weights and Biases (WandB), we meticulously tracked crucial metrics during the training and evaluation phases of our DistilBERT model. The metrics captured include training loss, validation loss, and accuracy. These metrics serve as vital indicators of our model's performance and its ability to classify AI-generated texts from Language Model Models (LLMs).
+
+The training loss is a measure of how well the model is learning from the training data. A decreasing trend in training loss indicates that the model is effectively minimizing errors during training, while validation loss provides insights into the model's generalization performance on unseen data. A consistent decrease in both training and validation loss signifies that the model is learning relevant patterns without overfitting to the training set. Monitoring accuracy helps us gauge the model's capability to make correct predictions, which is especially significant in the context of our classification task.
+
+While the primary focus is on MLOps, tracking these metrics in WandB provides a valuable diagnostic tool. Any anomalies or unexpected patterns in the loss graphs or accuracy trends can signal potential issues with the model's training process, guiding decisions on hyperparameter adjustments or further refinements.
 
 
 ### Question 15
@@ -364,11 +368,13 @@ In this image we have tracked several metrics relating to the training and evalu
 >
 > Answer:
 
-The trainer.dockerfile defines an image that we utilized for local model training, using data we already had. This process saved the trained model's state in a shared folder.
+In our experiments, Docker played a pivotal role in containerizing our machine learning applications, providing a consistent and reproducible environment for both local development and deployment on Google Cloud Platform (GCP). We employed two Dockerfiles, each serving a distinct purpose in our MLOps pipeline.
 
-On the other hand, predict.dockerfile's image was responsible for loading this saved model state, running tests on some pre-existing data, and then calculating the model's accuracy. These two dockerfiles, used for local deployment, mainly differ in their initial commands: one initiates the training process while the other focuses on evaluation. Here is a link to the [trainer.dockerfile](https://github.com/DanielHolmelund/ml_ops_detect_ai_generated_text/blob/main/dockerfiles/train_model.dockerfile)
+The `trainer.dockerfile` defined an image tailored for local model training. This image was utilized to train our DistilBERT model using existing data. The trained model's state was then saved in a shared folder, allowing for easy access and further analysis. On the other hand, the `predict.dockerfile` image was designed for local deployment as well, with its primary focus on loading the trained model, running tests on existing data, and evaluation the model's performance. 
 
-For deployment on Google Cloud Platform (GCP), we used the cloudbuild.yaml file, which runs docker compose up and pushes it to the Container Registry.
+For deployment on GCP, we orchestrated the containerization process using the `cloudbuild.yaml` file. This configuration file triggered the build process, which involved executing docker compose up to create the containerized application. Subsequently, the resulting Docker image was pushed to the Google Container Registry, facilitating seamless deployment on GCP.
+
+This Docker-based approach ensures that ML experiments are executed in an isolated and reproducible environment. It also streamlines the deployment process, allowing for easy scaling and deployment on cloud infrastructure.  Here is a link to the [trainer.dockerfile](https://github.com/DanielHolmelund/ml_ops_detect_ai_generated_text/blob/main/dockerfiles/train_model.dockerfile)
 
 
 ### Question 16
